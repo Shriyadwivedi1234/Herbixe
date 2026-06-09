@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cursor-dot {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease;
+}
+
+@layer base {
+  :root {
+    --cream: #f5f0e8;
+    --bark:  #2c1f0e;
+    --moss:  #4a5e3a;
+    --gold:  #c9a84c;
+    --sage:  #7a9e6e;
+    --earth: #8b6914;
+    --mist:  #d4e0ca;
+    --dark:  #1a1208;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+    min-height: 100vh;
+  }
+  ::selection { background: rgba(201,168,76,0.25); }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); border-radius: 2px; }
+  input:focus, textarea:focus, select:focus {
+    border-color: rgba(201, 168, 76, 0.6) !important;
+    outline: none;
+  }
+}
+
+@layer components {
+  /* ── Page layout ── */
+  .page-main {
+    @apply min-h-screen pt-28 pb-20 relative;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(74, 94, 58, 0.18) 0%, transparent 55%),
+      var(--dark);
+  }
+
+  .page-container {
+    @apply max-w-[1200px] mx-auto px-6 md:px-14;
+  }
+
+  .page-container-wide {
+    @apply max-w-[1300px] mx-auto px-6 md:px-14;
+  }
+
+  .page-breadcrumb {
+    @apply text-[10px] tracking-widest uppercase text-mist/30 font-body mb-10 flex gap-3 items-center;
+  }
+
+  .page-title {
+    @apply font-display font-light text-4xl md:text-5xl mb-4 leading-tight;
+  }
+
+  .page-subtitle {
+    @apply text-mist/55 text-sm font-body leading-relaxed mb-10 max-w-xl;
+  }
+
+  /* ── Section headers (matches home) ── */
+  .section-tag {
+    @apply text-[10px] tracking-[0.4em] uppercase text-gold font-body flex items-center gap-4;
+  }
+  .section-tag::before,
+  .section-tag::after {
+    content: '';
+    @apply h-px bg-gold flex-shrink-0;
+    width: 40px;
+  }
+  .section-tag-center {
+    @apply text-[10px] tracking-[0.4em] uppercase text-gold font-body flex items-center justify-center gap-4;
+  }
+  .section-tag-center::before,
+  .section-tag-center::after {
+    content: '';
+    @apply h-px bg-gold flex-shrink-0;
+    width: 40px;
+  }
+
+  /* ── Buttons ── */
+  .btn-gold {
+    @apply inline-block bg-gold text-dark px-8 py-4 text-[11px] tracking-[0.2em] uppercase
+           font-body hover:opacity-90 transition-all duration-300 text-center;
+  }
+  .btn-outline {
+    @apply inline-block border border-gold/50 text-gold px-8 py-4 text-[11px] tracking-[0.2em] uppercase
+           font-body hover:bg-gold hover:text-dark transition-all duration-300 text-center;
+  }
+
+  /* ── Cards & panels ── */
+  .panel {
+    @apply border border-gold/15 p-8 md:p-10;
+    background: linear-gradient(135deg, rgba(74, 94, 58, 0.12), rgba(26, 18, 8, 0.95));
+  }
+
+  .panel-moss {
+    @apply border border-gold/20 p-8 md:p-10;
+    background: rgba(13, 31, 14, 0.4);
+  }
+
+  .content-prose {
+    @apply text-mist/70 text-sm font-body leading-[2] space-y-4;
+  }
+  .content-prose strong {
+    @apply text-gold font-normal;
+  }
+
+  /* ── Forms ── */
+  .form-label {
+    @apply block text-[9px] tracking-[0.3em] uppercase text-gold font-body mb-2;
+  }
+  .form-input {
+    @apply w-full bg-bark/60 border border-gold/20 text-cream px-4 py-3 text-sm font-body outline-none
+           transition-colors duration-300;
+  }
+
+  /* ── Category pills ── */
+  .pill {
+    @apply px-6 py-2.5 text-[10px] tracking-widest uppercase font-body transition-all duration-300
+           border border-gold/25 text-mist/60 hover:border-gold/50 hover:text-gold;
+  }
+  .pill-active {
+    @apply bg-gold text-dark border-gold;
+  }
+
+  /* ── Auth pages ── */
+  .auth-page {
+    @apply min-h-screen flex items-center justify-center px-6 py-20 relative;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 0%, rgba(74, 94, 58, 0.2) 0%, transparent 60%),
+      var(--dark);
+  }
+  .auth-card {
+    @apply w-full max-w-md border border-gold/15 p-10 md:p-12;
+    background: linear-gradient(135deg, rgba(74, 94, 58, 0.12), rgba(26, 18, 8, 0.95));
+  }
+
+  /* ── Loading ── */
+  .page-loading {
+    @apply min-h-screen flex items-center justify-center text-mist/40 font-body text-sm tracking-widest uppercase;
+  }
+}
