@@ -2,42 +2,109 @@
 import { motion } from 'framer-motion'
 
 const INGREDIENTS = [
-  { icon: '🌿', name: 'Bhringraj',   prop: 'Growth Awakener' },
-  { icon: '🫐', name: 'Amla',        prop: 'Strength Binder' },
-  { icon: '🍃', name: 'Brahmi',      prop: 'Scalp Nourisher' },
-  { icon: '🌱', name: 'Methi',       prop: 'Anti-Dandruff' },
-  { icon: '🌺', name: 'Hibiscus',    prop: 'Shine Ritual' },
-  { icon: '🌰', name: 'Castor Oil',  prop: 'Deep Conditioner' },
-  { icon: '🌾', name: 'Neem',        prop: 'Scalp Purifier' },
-  { icon: '🫚', name: 'Coconut Oil', prop: 'Sacred Carrier' },
-  { icon: '🌸', name: 'Tulsi',       prop: 'Anti-Microbial' },
-  { icon: '🌿', name: 'Shikakai',    prop: 'Natural Cleanser' },
+  { icon: '🌿', name: 'Bhringraj', prop: 'Growth Activator' },
+  { icon: '🫐', name: 'Amla', prop: 'Strengthener' },
+  { icon: '🍃', name: 'Brahmi', prop: 'Scalp Nourisher' },
+  { icon: '🌱', name: 'Methi', prop: 'Anti-Dandruff' },
+  { icon: '🌺', name: 'Hibiscus', prop: 'Shine Booster' },
+  { icon: '🌰', name: 'Castor Oil', prop: 'Deep Conditioning' },
+  { icon: '🌾', name: 'Neem', prop: 'Scalp Purifier' },
+  { icon: '🫚', name: 'Coconut Oil', prop: 'Base Carrier' },
+  { icon: '🌸', name: 'Tulsi', prop: 'Anti-Microbial' },
+  { icon: '🌿', name: 'Shikakai', prop: 'Natural Cleanser' },
 ]
 
 export function IngredientsSection() {
   return (
-    <section id="ingredients" className="py-36"
-             style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(30,58,30,0.1) 0%, transparent 70%)' }}>
-      <div className="max-w-[1300px] mx-auto px-14">
-        <div className="text-center mb-20">
-          <div className="section-tag justify-center before:w-12 after:w-12">Botanical Library</div>
-          <h2 className="font-display font-light" style={{ fontSize: 'clamp(28px,3.5vw,52px)' }}>
-            Nature's finest <span className="italic text-gold">sacred ingredients</span>
+    <section
+      id="ingredients"
+      className="py-[140px]"
+      style={{
+        background:
+          'linear-gradient(to bottom, transparent, rgba(74,94,58,0.08), transparent)',
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-[60px]">
+
+        {/* Heading */}
+        <div className="text-center">
+          <p
+            className="uppercase text-[10px] tracking-[0.4em] text-gold mb-5 flex items-center justify-center gap-4"
+          >
+            <span className="w-10 h-px bg-gold inline-block" />
+            Botanical Library
+            <span className="w-10 h-px bg-gold inline-block" />
+          </p>
+
+          <h2
+            className="font-display font-light leading-[1.1]"
+            style={{
+              fontSize: 'clamp(38px,4vw,60px)',
+            }}
+          >
+            Nature's finest{' '}
+            <em
+              className="not-italic"
+              style={{
+                fontStyle: 'italic',
+                color: 'var(--sage)',
+              }}
+            >
+              active ingredients
+            </em>
           </h2>
         </div>
 
-        <div className="grid grid-cols-5 gap-px">
+        {/* Grid */}
+        <div
+          className="grid grid-cols-5 gap-[35px] max-w-[1000px] mx-auto mt-20"
+        >
           {INGREDIENTS.map((ing, i) => (
-            <motion.div key={ing.name}
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.6 }}
-              className="group p-12 text-center border border-gold/7 bg-ink/70
-                         hover:bg-forest/90 hover:border-gold/25 transition-all duration-400 relative overflow-hidden">
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent
-                              scale-x-0 group-hover:scale-x-100 transition-transform duration-400" />
-              <span className="text-4xl block mb-3">{ing.icon}</span>
-              <div className="font-display text-base mb-1.5">{ing.name}</div>
-              <div className="font-display italic text-xs text-sage">{ing.prop}</div>
+            <motion.div
+              key={ing.name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.05,
+                duration: 0.6,
+              }}
+              className="text-center"
+              style={{
+                padding: '48px 24px',
+                border: '1px solid rgba(201,168,76,0.08)',
+                transition: 'all 0.4s ease',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '40px',
+                  display: 'block',
+                  marginBottom: '16px',
+                }}
+              >
+                {ing.icon}
+              </span>
+
+              <div
+                className="font-display"
+                style={{
+                  fontSize: '18px',
+                  marginBottom: '8px',
+                }}
+              >
+                {ing.name}
+              </div>
+
+              <div
+                style={{
+                  fontSize: '11px',
+                  color: 'var(--sage)',
+                  letterSpacing: '0.1em',
+                }}
+              >
+                {ing.prop}
+              </div>
             </motion.div>
           ))}
         </div>
@@ -47,32 +114,120 @@ export function IngredientsSection() {
 }
 
 const STEPS = [
-  { n: '01', title: 'Ethical Wild Sourcing',   desc: 'We partner with certified organic farms across India\'s most fertile lands. Every herb grown without pesticides in its native soil for maximum potency.' },
-  { n: '02', title: 'Cold Press Extraction',   desc: 'Active compounds extracted at low temperatures, preserving delicate phytochemicals that heat-based processing would destroy.' },
-  { n: '03', title: 'Sacred Formulation',      desc: 'Each formula undergoes 6+ months of blind testing with 50 volunteers across different hair types before we approve it for launch.' },
-  { n: '04', title: 'Small Batch Crafting',    desc: 'We produce in controlled small batches to guarantee freshness, potency, and quality consistency in every jar — so the ritual remains sacred.' },
+  {
+    n: '01',
+    title: 'Ethical Sourcing',
+    desc: 'We partner with certified organic farms across India, ensuring every herb is grown without pesticides in its native soil and climate for maximum potency.',
+  },
+  {
+    n: '02',
+    title: 'Cold Press Extraction',
+    desc: 'Active compounds are extracted at low temperatures to preserve delicate phytochemicals that heat-based processing would destroy — your hair gets every benefit.',
+  },
+  {
+    n: '03',
+    title: 'Formulation & Testing',
+    desc: 'Each formula undergoes 6+ months of blind testing with a panel of 50 volunteers across different hair types before we approve it for launch.',
+  },
+  {
+    n: '04',
+    title: 'Small-Batch Crafting',
+    desc: 'We produce in controlled small batches to guarantee freshness, potency, and quality consistency in every jar you receive.',
+  },
 ]
 
 export function ProcessSection() {
   return (
-    <section id="process" className="py-36">
-      <div className="max-w-[1200px] mx-auto px-14">
-        <div className="mb-20">
-          <div className="section-tag">The Ritual Process</div>
-          <h2 className="font-display font-light" style={{ fontSize: 'clamp(28px,3.5vw,52px)' }}>
-            From root <span className="italic text-gold">to sacred ritual</span>
+    <section id="process" className="py-[140px]">
+      <div className="max-w-[1200px] mx-auto px-[60px]">
+
+        {/* Heading */}
+        <div className="mb-16">
+          <p
+            className="uppercase text-[10px] tracking-[0.4em] text-gold mb-5 flex items-center gap-4"
+          >
+            <span className="w-10 h-px bg-gold inline-block" />
+            How We Make It
+          </p>
+
+          <h2
+            className="font-display font-light leading-[1.1]"
+            style={{
+              fontSize: 'clamp(38px,4vw,60px)',
+            }}
+          >
+            From root to{' '}
+            <em
+              className="not-italic"
+              style={{
+                fontStyle: 'italic',
+                color: 'var(--sage)',
+              }}
+            >
+              ritual
+            </em>
           </h2>
         </div>
-        {STEPS.map((step, i) => (
-          <motion.div key={step.n}
-            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7 }}
-            className="grid grid-cols-[100px_1fr_1fr] gap-10 py-12 border-b border-gold/8 items-start">
-            <div className="font-display text-[64px] text-gold/12 leading-none">{step.n}</div>
-            <div className="font-display italic text-3xl text-gold pt-3">{step.title}</div>
-            <div className="text-sm text-mist/60 leading-[2] font-body pt-5">{step.desc}</div>
-          </motion.div>
-        ))}
+
+        {/* Steps */}
+        <div>
+          {STEPS.map((step, i) => (
+            <motion.div
+              key={step.n}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.1,
+                duration: 0.7,
+              }}
+              className="grid items-start py-12"
+              style={{
+                gridTemplateColumns: '80px 1fr 1fr',
+                gap: '40px',
+                borderBottom: '1px solid rgba(201,168,76,0.1)',
+              }}
+            >
+              {/* Number */}
+              <div
+                className="font-display leading-none"
+                style={{
+                  fontSize: '72px',
+                  fontWeight: 300,
+                  color: 'rgba(201,168,76,0.15)',
+                }}
+              >
+                {step.n}
+              </div>
+
+              {/* Title */}
+              <div
+                className="font-display"
+                style={{
+                  fontSize: '32px',
+                  fontWeight: 300,
+                  color: 'var(--gold)',
+                  paddingTop: '16px',
+                }}
+              >
+                {step.title}
+              </div>
+
+              {/* Description */}
+              <div
+                style={{
+                  fontSize: '14px',
+                  lineHeight: 2,
+                  color: 'rgba(245,240,232,0.6)',
+                  paddingTop: '20px',
+                }}
+              >
+                {step.desc}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
       </div>
     </section>
   )
@@ -88,33 +243,111 @@ export function TestimonialsSection() {
   return (
     <section id="testimonials" className="py-36">
       <div className="max-w-[1300px] mx-auto px-14">
+
+        {/* Heading */}
         <div className="text-center mb-20">
-          <div className="section-tag justify-center before:w-12 after:w-12">Sacred Testimonials</div>
-          <h2 className="font-display font-light" style={{ fontSize: 'clamp(28px,3.5vw,52px)' }}>
-            What our <span className="italic text-gold">community says</span>
+          <div className="section-tag justify-center before:w-12 after:w-12">
+            Sacred Testimonials
+          </div>
+
+          <h2
+            className="font-display font-light"
+            style={{ fontSize: 'clamp(28px,3.5vw,52px)' }}
+          >
+            What our{' '}
+            <span className="italic text-gold">
+              community says
+            </span>
           </h2>
         </div>
-        <div className="grid grid-cols-3 gap-px">
+
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-3 gap-10">
           {TESTIMONIALS.map((t, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7 }}
-              className="p-11 border border-gold/7 hover:border-gold/30 hover:bg-forest/40
-                         transition-all duration-400 relative text-left">
-              <div className="absolute top-0 left-6 font-display text-[100px] text-gold/8 leading-none select-none">"</div>
-              <div className="text-gold tracking-widest mb-5 text-sm">{'★'.repeat(t.stars)}</div>
-              <p className="font-display italic text-base leading-[1.9] text-mist/78 mb-8 relative">{t.text}</p>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.1,
+                duration: 0.7,
+              }}
+              whileHover={{
+                y: -8,
+              }}
+              className="p-12 relative text-left transition-all duration-500"
+              style={{
+                border: '1px solid rgba(201,168,76,0.12)',
+                borderRadius: '28px',
+                background: 'rgba(255,255,255,0.02)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              {/* Quote Mark */}
+              <div
+                className="absolute top-0 left-6 font-display leading-none select-none"
+                style={{
+                  fontSize: '100px',
+                  color: 'rgba(201,168,76,0.08)',
+                }}
+              >
+                "
+              </div>
+
+              {/* Stars */}
+              <div className="text-gold tracking-widest mb-5 text-sm">
+                {'★'.repeat(t.stars)}
+              </div>
+
+              {/* Review */}
+              <p
+                className="font-display italic mb-8 relative"
+                style={{
+                  fontSize: '16px',
+                  lineHeight: '1.9',
+                  color: 'rgba(245,240,232,0.78)',
+                }}
+              >
+                {t.text}
+              </p>
+
+              {/* Author */}
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full border border-gold/40 bg-gold/10 flex items-center justify-center
-                                font-display text-gold text-base">{t.initial}</div>
+                <div
+                  className="flex items-center justify-center font-display text-gold"
+                  style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(201,168,76,0.3)',
+                    background: 'rgba(201,168,76,0.08)',
+                    fontSize: '16px',
+                  }}
+                >
+                  {t.initial}
+                </div>
+
                 <div>
-                  <div className="text-sm text-cream">{t.name}</div>
-                  <div className="font-display italic text-xs text-sage">{t.loc}</div>
+                  <div className="text-sm text-cream">
+                    {t.name}
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      color: 'var(--sage)',
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    {t.loc}
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   )

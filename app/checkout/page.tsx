@@ -6,6 +6,7 @@ import { useCartStore, useCartHydrated } from '@/store/cartStore'
 import { useRouter } from 'next/navigation'
 import { loadRazorpayScript } from '@/lib/razorpay'
 import { useRequireAuth } from '@/lib/requireAuth'
+import { supabase } from '@/lib/supabase'
 
 export default function CheckoutPage() {
   const hydrated = useCartHydrated()
@@ -18,10 +19,11 @@ export default function CheckoutPage() {
   const shipping = sub >= 999 ? 0 : 60
   const total   = sub + shipping
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', line1: '', city: '', state: '', pincode: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', line1: '', line2: '', city: '', state: '', pincode: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState('')
 
+  // Prefill from user profile + saved address
   useEffect(() => {
     if (user) {
       setForm(f => ({
@@ -29,6 +31,25 @@ export default function CheckoutPage() {
         email: user.email || f.email,
         name: (user.user_metadata?.full_name as string) || f.name,
       }))
+      // Try to load default address
+      supabase.from('addresses').select('*').eq('customer_id', user.id).eq('is_default', true).maybeSingle()
+        .then(({ data }) => {
+          if (data) {
+            setForm(f => ({
+              ...f,
+              line1: data.line1 || f.line1,
+              line2: data.line2 || f.line2,
+              city: data.city || f.city,
+              state: data.state || f.state,
+              pincode: data.pincode || f.pincode,
+            }))
+          }
+        })
+      // Try to load phone from customer profile
+      supabase.from('customers').select('phone').eq('id', user.id).maybeSingle()
+        .then(({ data }) => {
+          if (data?.phone) setForm(f => ({ ...f, phone: data.phone }))
+        })
     }
   }, [user])
 
@@ -47,8 +68,13 @@ export default function CheckoutPage() {
       const loaded = await loadRazorpayScript()
       if (!loaded) { setError('Failed to load payment gateway. Please try again.'); setLoading(false); return }
 
+      // Get auth token for user_id linking
+      const { data: { session } } = await supabase.auth.getSession()
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+
       const r = await fetch('/api/razorpay/create', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers,
         body: JSON.stringify({ items, customer: form }),
       })
       const { data, error: apiErr } = await r.json()
@@ -120,6 +146,10 @@ export default function CheckoutPage() {
                     <input value={(form as any)[k]} onChange={e => set(k, e.target.value)} className="form-input" />
                   </div>
                 ))}
+                <div className="sm:col-span-2">
+                  <label className="form-label">Address Line 2 (optional)</label>
+                  <input value={form.line2} onChange={e => set('line2', e.target.value)} className="form-input" />
+                </div>
               </div>
             </div>
 

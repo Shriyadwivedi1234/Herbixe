@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { Product } from '@/types'
 import { useCartStore } from '@/store/cartStore'
 
@@ -10,65 +9,222 @@ interface Props {
   index?: number
 }
 
-export default function ProductCard({ product, index = 0 }: Props) {
+export default function ProductCard({
+  product,
+}: Props) {
   const { addItem } = useCartStore()
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.4, 0, 0.2, 1] }}
-      className="group bg-ink border border-gold/10 hover:border-gold/40 transition-all duration-500
-                 hover:-translate-y-1 cursor-none relative overflow-hidden"
+    <div
+      className="
+        group
+        h-full
+        flex
+        flex-col
+        overflow-hidden
+        border
+        border-[#2d2412]
+        hover:border-[#c9a84c]/40
+        transition-all
+        duration-500
+      "
+      style={{
+        background:
+          'linear-gradient(180deg, #161108 0%, #1b1409 100%)',
+      }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <Link
+        href={`/products/${product.slug}`}
+        className="block"
+      >
+        {/* Product Visual */}
+        <div
+          className="
+            relative
+            h-[320px]
+            overflow-hidden
+            flex
+            items-center
+            justify-center
+          "
+          style={{
+            background:
+              'linear-gradient(135deg, rgba(45,60,25,0.35) 0%, rgba(15,10,5,0.95) 100%)',
+          }}
+        >
+          {/* Glow */}
+          <div
+            className="
+              absolute
+              inset-0
+              opacity-0
+              group-hover:opacity-100
+              transition-opacity
+              duration-500
+            "
+            style={{
+              background:
+                'radial-gradient(circle at 50% 20%, rgba(122,158,110,0.25) 0%, transparent 65%)',
+            }}
+          />
 
-      <Link href={`/products/${product.slug}`} className="block">
-        <div className="h-64 relative overflow-hidden flex items-center justify-center border-b border-gold/8"
-             style={{ background: 'radial-gradient(ellipse at 50% 70%, rgba(30,58,30,0.8) 0%, rgba(6,13,6,0.95) 100%)' }}>
-          <span className="text-7xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-                style={{ filter: 'drop-shadow(0 0 20px rgba(201,168,76,0.35))', animation: `float ${2.5 + index * 0.3}s ease-in-out infinite` }}>
+          <span
+            className="
+              text-[90px]
+              transition-transform
+              duration-500
+              group-hover:scale-110
+            "
+            style={{
+              filter:
+                'drop-shadow(0 0 25px rgba(122,158,110,0.4))',
+            }}
+          >
             {product.icon}
           </span>
+
           {product.badge && (
-            <span className="absolute top-4 right-4 bg-gold text-dark text-[9px] tracking-widest uppercase px-3 py-1 font-body font-medium">
+            <span
+              className="
+                absolute
+                top-5
+                right-5
+                bg-[#c9a84c]
+                text-[#161108]
+                px-3
+                py-1.5
+                text-[9px]
+                uppercase
+                tracking-[0.2em]
+              "
+            >
               {product.badge}
             </span>
           )}
         </div>
       </Link>
 
-      <div className="p-7">
+      {/* Content */}
+      <div className="p-10 flex flex-col flex-1">
+
         <Link href={`/products/${product.slug}`}>
-          <p className="text-[9px] tracking-[0.35em] uppercase text-sage mb-2 font-body">
+          <p
+            className="
+              text-[9px]
+              uppercase
+              tracking-[0.35em]
+              text-[#7a9e6e]
+              mb-3
+            "
+          >
             {product.category.replace(/-/g, ' ')}
           </p>
-          <h3 className="font-display text-xl mb-2.5 hover:text-gold transition-colors">{product.name}</h3>
-        </Link>
-        <p className="text-xs text-mist/60 leading-[1.8] mb-5 font-body">{product.description}</p>
 
-        <div className="flex flex-wrap gap-1.5 mb-6">
-          {product.ingredients.slice(0, 4).map(ing => (
-            <span key={ing} className="font-display italic text-[10px] text-sage border border-sage/30 px-2.5 py-1">
-              {ing}
-            </span>
-          ))}
+          <h3
+            className="
+              font-display
+              text-[22px]
+              text-[#f5f0e8]
+              mb-4
+              transition-colors
+              duration-300
+              group-hover:text-[#c9a84c]
+            "
+          >
+            {product.name}
+          </h3>
+        </Link>
+
+        <p
+          className="
+            text-[14px]
+            leading-9
+            text-[#8d8778]
+            mb-7
+          "
+        >
+          {product.description}
+        </p>
+
+        {/* Ingredients */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {product.ingredients
+            .slice(0, 4)
+            .map((ingredient) => (
+              <span
+                key={ingredient}
+                className="
+                  px-3
+                  py-1.5
+                  text-[10px]
+                  border
+                  border-[#3b321d]
+                  text-[#9b8d63]
+                "
+              >
+                {ingredient}
+              </span>
+            ))}
         </div>
 
-        <div className="flex items-center justify-between border-t border-gold/10 pt-5">
-          <div className="font-display text-2xl text-gold font-light">
+        {/* Footer */}
+        <div
+          className="
+            mt-auto
+            pt-6
+            border-t
+            border-[#2d2412]
+            flex
+            items-center
+            justify-between
+          "
+        >
+          <div
+            className="
+              font-display
+              text-[34px]
+              font-light
+              text-[#c9a84c]
+            "
+          >
             ₹{product.price.toLocaleString()}
-            <span className="font-body text-xs text-mist/40 ml-1 font-light">/ {product.size}</span>
+
+            <span
+              className="
+                text-base
+                text-[#7f7768]
+                ml-1
+              "
+            >
+              / {product.size}
+            </span>
           </div>
+
           <button
-            onClick={(e) => { e.preventDefault(); addItem(product) }}
-            className="border border-gold/50 text-gold px-5 py-2.5 text-[9px] tracking-[0.2em]
-                       uppercase font-body hover:bg-gold hover:text-dark transition-all duration-300">
-            Add to Cart
+            onClick={(e) => {
+              e.preventDefault()
+              addItem(product)
+            }}
+            className="
+              border
+              border-[#c9a84c]
+              text-[#c9a84c]
+              px-8
+              py-3
+              text-[10px]
+              uppercase
+              tracking-[0.25em]
+              transition-all
+              duration-300
+              hover:bg-[#c9a84c]
+              hover:text-[#161108]
+            "
+          >
+            Add To Cart
           </button>
         </div>
+
       </div>
-    </motion.div>
+    </div>
   )
 }

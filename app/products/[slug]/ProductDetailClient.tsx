@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { Product } from '@/types'
 import { useCartStore } from '@/store/cartStore'
 import { PRODUCTS } from '@/lib/products'
@@ -27,14 +26,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="h-[400px] lg:h-[520px] border border-gold/15 flex items-center justify-center relative overflow-hidden"
+          <div
+            className="h-[400px] lg:h-[520px] rounded-2xl flex items-center justify-center relative overflow-hidden"
             style={{ background: 'radial-gradient(ellipse at 50% 60%, rgba(30,58,30,0.7) 0%, rgba(6,13,6,0.97) 100%)' }}
           >
-            <span className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold" />
-            <span className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gold" />
+            <span className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold/40" />
+            <span className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gold/40" />
             {product.badge && (
               <span className="absolute top-5 right-5 bg-gold text-dark text-[9px] tracking-widest px-3 py-1 font-body uppercase">
                 {product.badge}
@@ -44,12 +41,9 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                   style={{ filter: 'drop-shadow(0 0 40px rgba(201,168,76,0.35))', animation: 'float 4s ease-in-out infinite' }}>
               {product.icon}
             </span>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-          >
+          <div>
             <p className="text-[9px] tracking-[0.35em] uppercase text-sage font-body mb-3">
               {product.category.replace(/-/g, ' ')}
             </p>
@@ -79,7 +73,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <p className="form-label mb-3">Ingredients</p>
               <div className="flex flex-wrap gap-2">
                 {product.ingredients?.map(ing => (
-                  <span key={ing} className="font-display italic text-[11px] text-sage border border-sage/30 px-3 py-1">
+                  <span key={ing} className="font-display italic text-[11px] text-sage border border-sage/30 px-3 py-1 rounded-full">
                     {ing}
                   </span>
                 ))}
@@ -106,7 +100,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <span className="text-[10px] tracking-widest text-sage font-body">✓ {product.stock} in stock</span>
               <span className="text-[10px] tracking-widest text-mist/35 font-body">Free shipping above ₹999</span>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         <div className="panel-moss mb-16">
@@ -117,9 +111,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         {related.length > 0 && (
           <div>
             <p className="section-tag mb-10">You May Also Like</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gold/6 border border-gold/8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map((p, i) => (
-                <ProductCard key={p.id} product={p} index={i} />
+                <div key={p.id} className="rounded-2xl overflow-hidden bg-forest/40">
+                  <ProductCard product={p} index={i} />
+                </div>
               ))}
             </div>
           </div>

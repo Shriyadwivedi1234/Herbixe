@@ -1,106 +1,144 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { motion } from 'framer-motion'
-
-const stat = (num: string, label: string) => ({ num, label })
-const stats = [stat('23+', 'Active Botanicals'), stat('0%', 'Synthetics'), stat('4.9★', 'Avg Rating')]
+import * as THREE from 'three'
 
 export default function PhilosophySection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
-  const variants = {
-    hidden:  { opacity: 0, y: 36 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] } },
-  }
+  useEffect(() => {
+    const canvas = document.getElementById('phil-canvas') as HTMLCanvasElement
+    if (!canvas || !canvas.parentElement) return
+
+    const w = canvas.parentElement.offsetWidth
+    const h = canvas.parentElement.offsetHeight
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(w, h)
+
+    const scene  = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100)
+    camera.position.set(0, 0, 8)
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4))
+    const dl = new THREE.DirectionalLight(0xc9a84c, 2)
+    dl.position.set(3, 5, 5)
+    scene.add(dl)
+    const pl = new THREE.PointLight(0x7a9e6e, 3, 20)
+    pl.position.set(-3, -2, 4)
+    scene.add(pl)
+
+    const helixPoints: THREE.Vector3[] = []
+    for (let i = 0; i < 100; i++) {
+      const t = (i / 100) * Math.PI * 6 - Math.PI * 3
+      helixPoints.push(new THREE.Vector3(Math.cos(t) * 1.5, t / 3, Math.sin(t) * 1.5))
+    }
+
+    const helixCurve = new THREE.CatmullRomCurve3(helixPoints)
+    const helixGeo   = new THREE.TubeGeometry(helixCurve, 200, 0.025, 8, false)
+    scene.add(new THREE.Mesh(
+      helixGeo,
+      new THREE.MeshStandardMaterial({ color: 0x7a9e6e, emissive: 0x2a4e1a, emissiveIntensity: 0.5 })
+    ))
+
+    const helixPoints2 = helixPoints.map((_p, i) => {
+      const t = (i / 100) * Math.PI * 6 - Math.PI * 3
+      return new THREE.Vector3(-Math.cos(t) * 1.5, t / 3, -Math.sin(t) * 1.5)
+    })
+    const helixGeo2 = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(helixPoints2), 200, 0.025, 8, false)
+    scene.add(new THREE.Mesh(
+      helixGeo2,
+      new THREE.MeshStandardMaterial({ color: 0xc9a84c, emissive: 0x6a4814, emissiveIntensity: 0.3 })
+    ))
+
+    for (let i = 5; i < 95; i += 8) {
+      const p1 = helixPoints[i], p2 = helixPoints2[i]
+      const mid = new THREE.Vector3().lerpVectors(p1, p2, 0.5)
+      const bar = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.015, 0.015, p1.distanceTo(p2), 4),
+        new THREE.MeshStandardMaterial({ color: 0xd4e0ca, transparent: true, opacity: 0.5 })
+      )
+      bar.position.copy(mid)
+      bar.lookAt(p2)
+      bar.rotateX(Math.PI / 2)
+      scene.add(bar)
+    }
+
+    let elapsed = 0
+    let raf: number
+    const animate = () => {
+      raf = requestAnimationFrame(animate)
+      elapsed += 0.005
+      scene.rotation.y = elapsed * 0.3
+      scene.position.y = Math.sin(elapsed * 0.5) * 0.3
+      renderer.render(scene, camera)
+    }
+    animate()
+
+    const onResize = () => {
+      if (!canvas.parentElement) return
+      const nw = canvas.parentElement.offsetWidth
+      const nh = canvas.parentElement.offsetHeight
+      camera.aspect = nw / nh
+      camera.updateProjectionMatrix()
+      renderer.setSize(nw, nh)
+    }
+    window.addEventListener('resize', onResize)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', onResize)
+      renderer.dispose()
+    }
+  }, [])
 
   return (
-    <section id="philosophy" className="py-36" ref={ref}>
-      <div className="max-w-[1300px] mx-auto px-14 grid grid-cols-2 gap-20 items-center">
+    <section
+      id="philosophy"
+      ref={ref}
+      style={{
+        padding: '140px 60px',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 80,
+        alignItems: 'center',
+        maxWidth: 1400,
+        margin: '0 auto',
+      }}
+    >
+      <div style={{ position: 'relative', height: 600 }}>
+        <canvas
+          id="phil-canvas"
+          style={{ width: '100%', height: '100%', display: 'block' }}
+        />
+      </div>
 
-        {/* Visual — abstract botanical art */}
-        <motion.div variants={variants} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          className="relative h-[580px] border border-gold/15">
-          {/* Corner accents */}
-          <span className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-gold" />
-          <span className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-gold" />
-
-          <svg viewBox="0 0 500 580" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            {/* Central botanical illustration */}
-            <defs>
-              <radialGradient id="phGlow" cx="50%" cy="50%">
-                <stop offset="0%" stopColor="rgba(74,124,74,0.25)" />
-                <stop offset="100%" stopColor="transparent" />
-              </radialGradient>
-            </defs>
-            <rect width="500" height="580" fill="rgba(13,31,14,0.6)" />
-            <ellipse cx="250" cy="290" rx="200" ry="240" fill="url(#phGlow)" />
-
-            {/* Main stem */}
-            <path d="M250,500 C250,400 230,300 250,150" stroke="#4a7c4a" strokeWidth="2.5" fill="none"/>
-            {/* Leaves */}
-            {[
-              { y: 380, dir: 1 }, { y: 320, dir: -1 },
-              { y: 260, dir: 1 }, { y: 200, dir: -1 },
-            ].map((l, i) => (
-              <g key={i}>
-                <path d={`M250,${l.y} C${250 + l.dir * 80},${l.y - 30} ${250 + l.dir * 100},${l.y - 70} ${250 + l.dir * 30},${l.y - 80} C${250 + l.dir * 50},${l.y - 50} 250,${l.y} 250,${l.y}Z`}
-                      fill="rgba(74,124,74,0.55)" stroke="#7a9e6e" strokeWidth="0.8"/>
-                <path d={`M250,${l.y} L${250 + l.dir * 60},${l.y - 50}`}
-                      stroke="#4a7c4a" strokeWidth="0.8" opacity="0.5"/>
-              </g>
-            ))}
-            {/* Flower at top */}
-            {[0,60,120,180,240,300].map((angle, i) => (
-              <ellipse key={i}
-                cx={250 + Math.cos(angle * Math.PI / 180) * 22}
-                cy={150 + Math.sin(angle * Math.PI / 180) * 22}
-                rx="12" ry="20"
-                fill="rgba(201,168,76,0.35)" stroke="#c9a84c" strokeWidth="0.6"
-                transform={`rotate(${angle},${250 + Math.cos(angle * Math.PI / 180) * 22},${150 + Math.sin(angle * Math.PI / 180) * 22})`}
-              />
-            ))}
-            <circle cx="250" cy="150" r="10" fill="rgba(201,168,76,0.6)" stroke="#e8c96a" strokeWidth="1"/>
-
-            {/* Decorative corner botanicals */}
-            <text x="40"  y="80"  fontSize="28" opacity="0.2" fill="#7a9e6e">🌿</text>
-            <text x="400" y="500" fontSize="24" opacity="0.2" fill="#7a9e6e">🌱</text>
-            <text x="380" y="80"  fontSize="20" opacity="0.15" fill="#c9a84c">✦</text>
-            <text x="60"  y="500" fontSize="16" opacity="0.15" fill="#c9a84c">✦</text>
-          </svg>
-        </motion.div>
-
-        {/* Text */}
-        <motion.div variants={variants} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          transition={{ delay: 0.2 }}>
-          <div className="section-tag">Our Philosophy</div>
-          <h2 className="font-display font-light leading-[1.1] mb-7"
-              style={{ fontSize: 'clamp(32px,3.5vw,54px)' }}>
-            Nature holds every<br />
-            <span className="italic text-sage">secret your hair needs</span>
-          </h2>
-          <p className="text-mist/70 text-sm leading-[2] mb-4">
-            At Herbixe, we believe that centuries of Ayurvedic wisdom hold solutions no laboratory can replicate.
-            Each product is a careful distillation of botanicals known for their transformative effects on hair —
-            encoded in the DNA of Indian herbalism for thousands of years.
-          </p>
-          <p className="text-mist/70 text-sm leading-[2]">
-            We source herbs from certified organic farms across India's most fertile regions and process them
-            with cold-press techniques that preserve every active compound.
-          </p>
-
-          <div className="flex gap-12 mt-14">
-            {stats.map(({ num, label }) => (
-              <div key={label} className="border-l-2 border-gold pl-5">
-                <div className="font-display text-5xl text-gold font-light leading-none">{num}</div>
-                <div className="text-[11px] tracking-wider text-mist/50 mt-1 font-body">{label}</div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
+      <div style={{ paddingLeft: 40 }}>
+        <p style={{ fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16 }}>
+          <span style={{ width: 40, height: 1, background: 'var(--gold)', display: 'inline-block' }} />
+          Our Philosophy
+        </p>
+        <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(38px,4vw,60px)', fontWeight: 300, lineHeight: 1.1, marginBottom: 28 }}>
+          Nature holds every<br />
+          <em style={{ fontStyle: 'italic', color: 'var(--sage)' }}>answer your hair needs</em>
+        </h2>
+        <p style={{ fontSize: 15, lineHeight: 2, color: 'rgba(245,240,232,0.7)', marginBottom: 24 }}>
+          At Herbixe, we believe that centuries of Ayurvedic wisdom hold solutions that no laboratory can replicate. Each product is a careful distillation of botanicals known for their transformative effects on hair health.
+        </p>
+        <p style={{ fontSize: 15, lineHeight: 2, color: 'rgba(245,240,232,0.7)', marginBottom: 24 }}>
+          We source our herbs from trusted growers across India's most fertile regions — from the tulsi of Mathura to the bhringraj of Bengal — and process them with cold-press techniques that preserve every active compound.
+        </p>
+        <div style={{ display: 'flex', gap: 48, marginTop: 48 }}>
+          {[['23+', 'Active Botanicals'], ['0%', 'Synthetic Chemicals'], ['4.9', 'Avg. Rating']].map(([n, l]) => (
+            <div key={l} style={{ borderLeft: '1px solid var(--gold)', paddingLeft: 20 }}>
+              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 48, fontWeight: 300, color: 'var(--gold)', lineHeight: 1 }}>{n}</div>
+              <div style={{ fontSize: 11, letterSpacing: '0.15em', opacity: 0.6, marginTop: 4 }}>{l}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

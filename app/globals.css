@@ -44,8 +44,15 @@
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
-    cursor: none;
     min-height: 100vh;
+  }
+  /* Custom cursor only on non-touch devices */
+  @media (pointer: fine) {
+    body { cursor: none; }
+    .cursor-dot, .cursor-ring { display: block; }
+  }
+  @media (pointer: coarse) {
+    .cursor-dot, .cursor-ring { display: none !important; }
   }
   ::selection { background: rgba(201,168,76,0.25); }
   ::-webkit-scrollbar { width: 4px; }

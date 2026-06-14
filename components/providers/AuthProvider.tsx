@@ -41,7 +41,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
       options: { data: { full_name: name } },
     })
-    return error?.message ?? null
+    if (error) return error.message
+
+    // Fire-and-forget: insert customer row + send welcome email
+    fetch('/api/signup/welcome', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name }),
+    }).catch(() => {})
+
+    return null
   }, [])
 
   const signOut = useCallback(async () => {

@@ -3,7 +3,7 @@ export interface Product {
   id: string
   name: string
   slug: string
-  category: 'hair-paste' | 'herbal-oil' | 'premium-package' | 'scalp-care'
+  category: 'hair-paste' | 'herbal-oil' | 'premium-package' | 'scalp-care' | 'body-wash' | 'body-lotion' | 'body-scrub' | 'body-oil'
   price: number
   original_price?: number
   size: string
@@ -15,6 +15,7 @@ export interface Product {
   badge?: string
   icon: string
   stock: number
+  low_stock_threshold?: number
   images: string[]
   rating: number
   review_count: number

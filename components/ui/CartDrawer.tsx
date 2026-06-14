@@ -25,7 +25,7 @@ export default function CartDrawer() {
                        ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} />
 
       {/* Drawer */}
-      <aside className={`fixed right-0 top-0 bottom-0 w-[420px] bg-bark z-[2000] flex flex-col
+      <aside className={`fixed right-0 top-0 bottom-0 w-full sm:w-[420px] bg-bark z-[2000] flex flex-col
                          border-l border-gold/20 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
                          ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
 

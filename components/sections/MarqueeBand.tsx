@@ -1,21 +1,60 @@
 export default function MarqueeBand() {
   const items = [
-    'Herbal Hair Paste', 'Premium Botanical Oils', 'Sacred Formulations',
-    '100% Natural Ingredients', 'Cruelty Free Rituals', 'Ancient Ayurvedic Wisdom',
+    'Herbal Hair Paste',
+    'Premium Hair Oil',
+    'Botanical Extracts',
+    '100% Natural',
+    'Cruelty Free',
+    'Handcrafted',
   ]
+
   const doubled = [...items, ...items]
 
   return (
-    <div className="overflow-hidden border-y border-gold/20 py-3.5"
-         style={{ background: 'linear-gradient(to right, #1e3a1e, #4a5e3a, #1e3a1e)' }}>
-      <div className="flex animate-marquee whitespace-nowrap">
+    <div
+      style={{
+        background: 'var(--moss)',
+        padding: '16px 0',
+        overflow: 'hidden',
+        borderTop: '1px solid rgba(201,168,76,0.2)',
+        borderBottom: '1px solid rgba(201,168,76,0.2)',
+      }}
+    >
+      <div
+        className="flex whitespace-nowrap animate-marquee"
+        style={{
+          animationDuration: '20s',
+          animationTimingFunction: 'linear',
+          animationIterationCount: 'infinite',
+        }}
+      >
         {doubled.map((item, i) => (
-          <span key={i} className="px-8 font-display italic text-mist text-sm flex items-center gap-8">
+          <span
+            key={i}
+            style={{
+              padding: '0 40px',
+              fontSize: '11px',
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              color: 'var(--mist)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '40px',
+            }}
+          >
             {item}
-            <span className="text-gold not-italic">✦</span>
+
+            <span
+              style={{
+                color: 'var(--gold)',
+              }}
+            >
+              ✦
+            </span>
           </span>
         ))}
       </div>
     </div>
   )
 }
+

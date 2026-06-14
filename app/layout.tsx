@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { AuthProvider } from '@/components/providers/AuthProvider'
 import ConditionalSiteShell from '@/components/layout/ConditionalSiteShell'
 // @ts-ignore: CSS module types are not declared in this project
@@ -21,10 +20,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Script
-          src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-          strategy="beforeInteractive"
-        />
         <AuthProvider>
           <ConditionalSiteShell>{children}</ConditionalSiteShell>
         </AuthProvider>

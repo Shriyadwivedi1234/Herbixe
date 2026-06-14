@@ -40,9 +40,11 @@ export default function ProductsPage({
         </div>
 
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gold/6 border border-gold/8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
+              <div key={product.id} className="rounded-2xl overflow-hidden bg-forest/40">
+                <ProductCard product={product} index={i} />
+              </div>
             ))}
           </div>
         ) : (

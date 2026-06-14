@@ -6,7 +6,7 @@ import Footer from './Footer'
 import CartDrawer from '@/components/ui/CartDrawer'
 import CustomCursor from '@/components/ui/CustomCursor'
 
-const BARE_PATHS = ['/', '/login', '/signup']
+const BARE_PATHS = ['/login', '/signup']
 
 export default function ConditionalSiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()

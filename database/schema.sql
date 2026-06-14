@@ -8,27 +8,28 @@ create extension if not exists "uuid-ossp";
 
 -- ─── PRODUCTS ────────────────────────────────────────────────────────────────
 create table if not exists products (
-  id               uuid primary key default uuid_generate_v4(),
-  name             text not null,
-  slug             text not null unique,
-  category         text not null check (category in ('hair-paste','herbal-oil','scalp-care','premium-package')),
-  price            integer not null,               -- in rupees
-  original_price   integer,
-  size             text not null,
-  description      text not null,
-  long_description text,
-  ingredients      text[]  default '{}',
-  benefits         text[]  default '{}',
-  how_to_use       text,
-  badge            text,
-  icon             text    default '🌿',
-  stock            integer default 0,
-  images           text[]  default '{}',
-  rating           numeric(3,1) default 0,
-  review_count     integer default 0,
-  is_active        boolean default true,
-  created_at       timestamptz default now(),
-  updated_at       timestamptz default now()
+  id                    uuid primary key default uuid_generate_v4(),
+  name                  text not null,
+  slug                  text not null unique,
+  category              text not null check (category in ('hair-paste','herbal-oil','scalp-care','premium-package','body-wash','body-lotion','body-scrub','body-oil')),
+  price                 integer not null,               -- in rupees
+  original_price        integer,
+  size                  text not null,
+  description           text not null,
+  long_description      text,
+  ingredients           text[]  default '{}',
+  benefits              text[]  default '{}',
+  how_to_use            text,
+  badge                 text,
+  icon                  text    default '🌿',
+  stock                 integer default 0,
+  low_stock_threshold   integer default 5,
+  images                text[]  default '{}',
+  rating                numeric(3,1) default 0,
+  review_count          integer default 0,
+  is_active             boolean default true,
+  created_at            timestamptz default now(),
+  updated_at            timestamptz default now()
 );
 
 -- ─── CUSTOMERS ───────────────────────────────────────────────────────────────
@@ -37,6 +38,7 @@ create table if not exists customers (
   id         uuid primary key references auth.users(id) on delete cascade,
   name       text,
   phone      text,
+  role       text default 'customer' check (role in ('customer','admin','staff','support')),
   created_at timestamptz default now()
 );
 
@@ -86,6 +88,9 @@ create table if not exists reviews (
   title       text,
   body        text,
   is_verified boolean default false,
+  approved    boolean default false,
+  approved_at timestamptz,
+  admin_note  text,
   created_at  timestamptz default now()
 );
 
@@ -127,7 +132,7 @@ alter table customers  enable row level security;
 alter table addresses  enable row level security;
 alter table reviews    enable row level security;
 
--- Products: public read, admin write
+-- Products: public read (approved only), admin write
 create policy "Products are publicly readable"
   on products for select using (is_active = true);
 
@@ -138,6 +143,12 @@ create policy "Users see own orders"
 create policy "Service role can manage orders"
   on orders using (auth.role() = 'service_role');
 
+-- Admins/staff can read all orders
+create policy "Admins can read all orders"
+  on orders for select using (
+    exists (select 1 from customers where id = auth.uid() and role in ('admin','staff'))
+  );
+
 -- Customers: own row only
 create policy "Users manage own profile"
   on customers using (auth.uid() = id);
@@ -146,8 +157,8 @@ create policy "Users manage own profile"
 create policy "Users manage own addresses"
   on addresses using (auth.uid() = customer_id);
 
--- Reviews: public read, owner write
-create policy "Reviews publicly readable" on reviews for select using (true);
+-- Reviews: public read approved only, owner write
+create policy "Reviews publicly readable" on reviews for select using (approved = true);
 create policy "Users write own reviews"   on reviews for insert with check (auth.uid() = user_id);
 
 -- ─── SEED PRODUCTS ───────────────────────────────────────────────────────────

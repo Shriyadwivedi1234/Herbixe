@@ -19,17 +19,6 @@ export default function HeroSection() {
       {/* 3D Canvas background */}
       <HeroScene />
 
-      {/* SVG botanical corner frame */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10"
-           viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <radialGradient id="vig">
-            <stop offset="30%" stopColor="transparent" />
-            <stop offset="100%" stopColor="rgba(10,15,10,0.85)" />
-          </radialGradient>
-        </defs>
-        <rect width="1440" height="900" fill="url(#vig)" />
-
         {/* Top-left corner */}
         <g transform="translate(30,30)" opacity="0.5" fill="none" stroke="#c9a84c" strokeWidth="0.8">
           <path d="M0,0 C20,40 10,80 30,120" strokeWidth="1.2"/>
@@ -67,53 +56,70 @@ export default function HeroSection() {
           <path d="M0,0 L40,0 L40,8 L8,8 L8,40 L0,40Z" fill="rgba(201,168,76,0.1)" strokeWidth="0.8"/>
         </g>
 
-        {/* Sparkle dots */}
-        <g fill="#c9a84c" opacity="0.35">
-          <text x="120" y="240" fontSize="10">✦</text>
-          <text x="1280" y="180" fontSize="8">✦</text>
-          <text x="80"   y="680" fontSize="6">✦</text>
-          <text x="1350" y="700" fontSize="10">✦</text>
-        </g>
-      </svg>
 
       {/* Hero text */}
-      <div className="relative z-20 text-center px-5 max-w-2xl">
-        <motion.p {...fadeUp(0.5)}
-          className="font-display italic tracking-[0.5em] text-gold text-sm uppercase mb-5">
-          Ancient Botanicals · Sacred Formulas
-        </motion.p>
+<div className="relative z-20 text-center px-5 max-w-4xl">
+  <motion.p
+    {...fadeUp(0.5)}
+    className="uppercase text-[11px] tracking-[0.4em] text-sage mb-6"
+  >
+    Pure • Potent • Botanical
+  </motion.p>
 
-        <motion.h1 {...fadeUp(0.8)}
-          className="font-display font-light leading-[0.95] mb-6"
-          style={{ fontSize: 'clamp(52px,9vw,110px)', textShadow: '0 0 60px rgba(201,168,76,0.25)' }}>
-          Herbixe<br />
-          <span className="italic text-gold">Botanical Rituals</span>
-        </motion.h1>
+  <motion.h1
+    {...fadeUp(0.8)}
+    className="font-display font-light leading-[0.9]"
+    style={{
+      fontSize: 'clamp(64px,10vw,140px)',
+      textShadow: '0 0 60px rgba(201,168,76,0.18)',
+    }}
+  >
+    Where Herbs
+    <br />
+    <em
+      className="block text-gold not-italic"
+      style={{
+        fontStyle: 'italic',
+      }}
+    >
+      Transform Hair
+    </em>
+  </motion.h1>
 
-        <motion.div {...fadeUp(1.1)}
-          className="flex items-center justify-center gap-4 my-6">
-          <div className="h-px bg-gradient-to-r from-transparent to-gold w-20" />
-          <span className="text-gold">✦</span>
-          <div className="h-px bg-gradient-to-l from-transparent to-gold w-20" />
-        </motion.div>
+  <motion.p
+    {...fadeUp(1.2)}
+    className="mx-auto mt-7 max-w-[420px] text-[14px] tracking-[0.15em] text-mist leading-[1.8]"
+  >
+    Ancient botanical wisdom meets modern formulation science.
+    Herbixe creates haircare that truly works.
+  </motion.p>
 
-        <motion.p {...fadeUp(1.3)}
-          className="font-display italic text-mist/80 text-lg leading-relaxed">
-          Where the wisdom of ancient herbs meets<br />the alchemy of modern science.
-        </motion.p>
+  <motion.div
+    {...fadeUp(1.5)}
+    className="flex flex-wrap justify-center gap-5 mt-12"
+  >
+    <a
+      href="#products"
+      className="px-11 py-4 text-[11px] uppercase tracking-[0.25em] border border-gold bg-gold text-dark transition-all duration-300 hover:scale-105"
+    >
+      Explore Collection
+    </a>
 
-        <motion.div {...fadeUp(1.6)} className="flex gap-5 justify-center mt-11">
-          <a href="#products" className="btn-gold font-display italic">Explore the Collection</a>
-          <a href="#philosophy" className="btn-ghost">Our Philosophy</a>
-        </motion.div>
-      </div>
+    <a
+      href="#philosophy"
+      className="px-11 py-4 text-[11px] uppercase tracking-[0.25em] border border-white/30 text-cream transition-all duration-300 hover:border-gold hover:text-gold"
+    >
+      Our Philosophy
+    </a>
+  </motion.div>
+</div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
         <span className="font-display italic text-gold text-[10px] tracking-[0.4em] uppercase">
-          Discover the Magic
+          Scroll Down
         </span>
         <div className="w-px h-12 bg-gradient-to-b from-gold to-transparent animate-breathe" />
       </motion.div>
