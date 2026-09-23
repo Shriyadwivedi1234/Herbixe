@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useRequireAuth } from '@/lib/requireAuth'
+import { useAuth } from '@/components/providers/AuthProvider'
 import { supabase } from '@/lib/supabase'
 import type { Order } from '@/types'
 
@@ -22,6 +24,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function AccountPage() {
   const { user, loading: authLoading } = useRequireAuth()
+  const { signOut } = useAuth()
+  const router = useRouter()
   const [data, setData] = useState<AccountData | null>(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
@@ -72,6 +76,11 @@ export default function AccountPage() {
     }
     setSaving(false)
     setTimeout(() => setMsg(''), 3000)
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.replace('/login')
   }
 
   if (authLoading || loading) return <main className="page-loading">Loading account…</main>
@@ -186,6 +195,16 @@ export default function AccountPage() {
               <Link href="/products" className="btn-gold">Browse Collection</Link>
             </div>
           )}
+        </div>
+
+        {/* Sign Out */}
+        <div className="text-center mt-8">
+          <button
+            onClick={handleSignOut}
+            className="text-gold/70 text-xs tracking-widest uppercase font-body hover:text-gold transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </div>
     </main>
