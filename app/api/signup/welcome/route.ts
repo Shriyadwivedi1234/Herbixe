@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (!authUser) return NextResponse.json({ ok: true }) // not an error, just skip
 
     // Insert customer row (ignore if already exists)
-    await db.from('customers').upsert({
+    await db.from('profiles').upsert({
       id: authUser.id,
       name,
       role: 'customer',

@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 // Load Razorpay only server-side
 export function getRazorpayInstance() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line
   const Razorpay = require('razorpay')
   return new Razorpay({
     key_id:     process.env.RAZORPAY_KEY_ID!,

@@ -47,6 +47,15 @@ function LoginForm() {
             <label className="form-label">Password</label>
             <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="form-input" />
           </div>
+          <div className="text-right">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-gold hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
           {error && <p className="text-red-400 text-xs font-body">{error}</p>}
           <button type="submit" disabled={loading} className="btn-gold w-full disabled:opacity-50">
             {loading ? 'Signing in…' : 'Sign In'}

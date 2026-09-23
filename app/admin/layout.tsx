@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useAuth } from '@/components/providers/AuthProvider'
-import { useRequireAuth } from '@/lib/requireAuth'
+import { useRequireAdmin } from '@/lib/useRequireAdmin'
 import { usePathname } from 'next/navigation'
 
 const ADMIN_NAV = [
@@ -11,11 +11,22 @@ const ADMIN_NAV = [
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading: authLoading } = useRequireAuth()
+  const {
+  user,
+  loading: authLoading,
+  isAdmin
+} = useRequireAdmin()
   const pathname = usePathname()
 
   if (authLoading) return <main className="page-loading">Checking access…</main>
   if (!user) return null
+  if (!isAdmin) {
+  return (
+    <main className="page-loading">
+      Access Denied
+    </main>
+  )
+}
 
   return (
     <main className="page-main">

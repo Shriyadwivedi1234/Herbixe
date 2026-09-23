@@ -129,7 +129,7 @@ export default function PhilosophySection() {
           At Herbixe, we believe that centuries of Ayurvedic wisdom hold solutions that no laboratory can replicate. Each product is a careful distillation of botanicals known for their transformative effects on hair health.
         </p>
         <p style={{ fontSize: 15, lineHeight: 2, color: 'rgba(245,240,232,0.7)', marginBottom: 24 }}>
-          We source our herbs from trusted growers across India's most fertile regions — from the tulsi of Mathura to the bhringraj of Bengal — and process them with cold-press techniques that preserve every active compound.
+          We source our herbs from trusted growers across India&apos;s most fertile regions — from the tulsi of Mathura to the bhringraj of Bengal — and process them with cold-press techniques that preserve every active compound.
         </p>
         <div style={{ display: 'flex', gap: 48, marginTop: 48 }}>
           {[['23+', 'Active Botanicals'], ['0%', 'Synthetic Chemicals'], ['4.9', 'Avg. Rating']].map(([n, l]) => (

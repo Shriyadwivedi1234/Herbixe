@@ -19,8 +19,8 @@ export async function getAdminUserId(req: NextRequest): Promise<string | null> {
   if (!user) return null
 
   const db = supabaseAdmin()
-  const { data: customer } = await db.from('customers').select('role').eq('id', user.id).maybeSingle()
-  if (!customer?.role || !['admin', 'staff'].includes(customer.role)) return null
+  const { data: profile } = await db.from('profiles').select('role').eq('id', user.id).maybeSingle()
+  if (!profile?.role || !['admin', 'staff'].includes(profile.role)) return null
 
   return user.id
 }

@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Insert customer row with role='customer'
-    await db.from('customers').insert({
+    await db.from('profiles').insert({
       id: data.user.id,
       name,
       role: 'customer',

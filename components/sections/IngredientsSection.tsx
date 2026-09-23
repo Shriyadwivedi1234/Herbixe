@@ -42,7 +42,7 @@ export function IngredientsSection() {
               fontSize: 'clamp(38px,4vw,60px)',
             }}
           >
-            Nature's finest{' '}
+            Nature&apos;s finest{' '}
             <em
               className="not-italic"
               style={{
@@ -292,7 +292,7 @@ export function TestimonialsSection() {
                   color: 'rgba(201,168,76,0.08)',
                 }}
               >
-                "
+                &quot;
               </div>
 
               {/* Stars */}
